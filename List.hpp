@@ -488,7 +488,18 @@ namespace   ft
 			}
 
 			template <typename Compare>
-			void merge(List& x, Compare comp);
+			void merge(List& x, Compare comp)
+			{
+				iterator beg = x.begin();
+				iterator end = x.end();
+				ft::List<T> newList;
+				while (beg != end)
+				{
+					push_back(*beg);
+					beg++;
+				}
+				this->sort(comp);
+			}
 			void sort()
 			{
 				iterator it = begin();
@@ -507,7 +518,7 @@ namespace   ft
 				}
 			}
 			template <typename Compare>
-			void sort()
+			void sort(Compare comp)
 			{
 				iterator it = begin();
 				iterator tmp(it);
