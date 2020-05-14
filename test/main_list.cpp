@@ -593,6 +593,159 @@ static void test_cmp_eq()
 	assert(lst2 <= lst);
 }
 
+static void test_splice()
+{
+	ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
+	ConstrCounter array2[5] = { 10, 11, 12, 13, 14 };
+
+	ft::List<ConstrCounter> lst(array, array + 5);
+	ft::List<ConstrCounter> lst2(array2, array2 + 5);
+
+	ft::ListIterator<ConstrCounter> ite1 = lst.begin();
+	++ite1;
+	lst.splice(ite1, lst2);
+
+	assert(lst.size() == 10);
+	assert(lst2.size() == 0);
+	assert(lst2.empty());
+
+	assert(get_n_bwd(lst, 0)->val == 0);
+	assert(get_n_fwd(lst, 1)->val == 10);
+	assert(get_n_bwd(lst, 2)->val == 11);
+	assert(get_n_fwd(lst, 3)->val == 12);
+	assert(get_n_bwd(lst, 4)->val == 13);
+	assert(get_n_bwd(lst, 5)->val == 14);
+	assert(get_n_bwd(lst, 6)->val == 1);
+	assert(get_n_bwd(lst, 7)->val == 2);
+	assert(get_n_bwd(lst, 8)->val == 3);
+	assert(get_n_bwd(lst, 9)->val == 4);
+}
+
+static void test_splice_iter()
+{
+	ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
+	ft::List<ConstrCounter> lst(array, array + 5);
+	ft::List<ConstrCounter> lst2(0, ConstrCounter(5));
+	
+	
+	
+	ft::ListIterator<ConstrCounter> ite1 = lst.begin();
+	++ite1; ++ite1;
+	
+	lst2.splice (lst2.begin(),lst, ite1);
+	assert(lst2.size() == 1);
+	assert(get_n_bwd(lst2, 0)->val == 2);
+	assert(lst.size() == 4);
+}
+
+static void test_splice_iter_first_last()
+{
+	ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
+	ConstrCounter array2[5] = { 100, 200, 300, 400, 500 };
+
+	ft::List<ConstrCounter> lst(array, array + 5);
+	ft::List<ConstrCounter> lst2(array2, array2 + 5);
+
+	ft::ListIterator<ConstrCounter> ite1 = lst.begin();
+	++ite1;
+	lst2.splice(lst2.begin(), lst, ite1, lst.end());
+	assert(lst2.size() == 9);
+	assert(get_n_bwd(lst2, 0)->val == 1);
+	assert(get_n_fwd(lst2, 1)->val == 2);
+	assert(get_n_bwd(lst2, 2)->val == 3);
+	assert(get_n_fwd(lst2, 3)->val == 4);
+	assert(get_n_bwd(lst2, 4)->val == 100);
+	assert(get_n_bwd(lst2, 5)->val == 200);
+	assert(get_n_bwd(lst2, 6)->val == 300);
+	assert(get_n_bwd(lst2, 7)->val == 400);
+	assert(get_n_bwd(lst2, 8)->val == 500);
+}
+
+static void test_remove()
+{
+	ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
+	ft::List<ConstrCounter> lst(array, array + 5);
+	lst.remove(2);
+
+	assert(lst.size() == 4);
+	assert(get_n_bwd(lst, 0)->val == 0);
+	assert(get_n_fwd(lst, 1)->val == 1);
+	assert(get_n_bwd(lst, 2)->val == 3);
+	assert(get_n_fwd(lst, 3)->val == 4);
+	lst.remove(0);
+	assert(lst.size() == 3);
+	assert(get_n_bwd(lst, 0)->val == 1);
+	assert(get_n_fwd(lst, 1)->val == 3);
+	assert(get_n_bwd(lst, 2)->val == 4);
+	
+}
+
+static bool	is_positive(int x)
+{
+	return (x >= 0);
+}
+
+static void test_remove_if()
+{
+	int array[5] = { 0, -1, -2, 3, 4 };
+	ft::List<int> lst(array, array + 5);
+	lst.remove_if(is_positive);
+
+	assert(lst.size() == 2);
+	assert(*get_n_bwd(lst, 0) == -1);
+	assert(*get_n_fwd(lst, 1) == -2);
+}
+
+static void test_unique()
+{
+	ConstrCounter array[5] = { 1, 1, 1, 3, 4 };
+	ft::List<ConstrCounter> lst(array, array + 5);
+
+	lst.unique();
+	assert(lst.size() == 3);
+
+	assert(*get_n_bwd(lst, 0) == 1);
+	assert(*get_n_bwd(lst, 1) == 3);
+	assert(*get_n_bwd(lst, 2) == 4);
+}
+
+//a binary predicate implemented as a function:
+bool same_integral_part (ConstrCounter first, ConstrCounter second)
+{
+	return (first.val == second.val); 
+}
+
+// a binary predicate implemented as a class:
+struct is_near
+{
+  bool operator() (double first, double second)
+	{
+		return (fabs(first-second)<5.0);
+	}
+};
+
+static void test_unique_binary_predicate()
+{
+	ConstrCounter array[5] = { 42, 42, 43, 43, 45 };
+	ft::List<ConstrCounter> lst(array, array + 5);
+
+	lst.unique(same_integral_part);
+	assert(lst.size() == 3);
+	assert(get_n_bwd(lst, 0)->val == 42);
+	assert(get_n_fwd(lst, 1)->val == 43);
+	assert(get_n_bwd(lst, 2)->val == 45);
+
+	double mydoubles[]={ 2.72,  3.14, 12.15, 15.3,  72.25, 73.0 };
+	ft::List<double> lst1(mydoubles, mydoubles + 6);
+	lst1.unique(is_near());
+	assert(lst1.size() == 3);
+	ft::ListIterator<double> ite1 = lst1.begin();
+	assert(*ite1++ == 2.72);
+	assert(*ite1++ == 12.15);
+	assert(*ite1 == 72.25);
+
+}
+
 static void test_reverse()
 {
 	ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
@@ -701,6 +854,13 @@ void test_list()
 	test_one("resize", test_resize);
 	test_one("swap", test_swap);
 	test_one("cmp_eq", test_cmp_eq);
+	test_one("splice", test_splice);
+	test_one("splice_iter", test_splice_iter);
+	test_one("splice_iter_first_last", test_splice_iter_first_last);
+	test_one("remove", test_remove);
+	test_one("remove_if", test_remove_if);
+	test_one("unique", test_unique);
+	test_one("unique_binary_predicate", test_unique_binary_predicate);
 	test_one("reverse", test_reverse);
 	test_one("merge", test_merge);
 	test_one("sort", test_sort);

@@ -1,7 +1,6 @@
 #ifndef LIST_HPP
 # define LIST_HPP
 # include <iterator>
-#include <iostream>
 # include "Utility.hpp"
 
 namespace   ft
@@ -425,7 +424,7 @@ namespace   ft
 				for(iterator it = begin(); it != end();)
 				{
 					if(*it == val)
-						erase(it);
+						it = erase(it);
 					else 
 						it++;
 				}
@@ -437,7 +436,7 @@ namespace   ft
 				for(iterator it = begin(); it != end();)
 				{
 					if(pred(*it))
-						erase(it);
+						it = erase(it);
 					else 
 						it++;
 				}
