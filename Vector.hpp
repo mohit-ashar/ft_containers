@@ -1,6 +1,7 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
-# include <iterator>
+# include <sstream>
+# include <stdexcept>
 # include "Utility.hpp"
 
 namespace	ft
@@ -302,8 +303,8 @@ namespace	ft
 				T* new_arr = alloc.allocate(new_cap);
 				for (size_t i = 0; i < _len; i++)
 				{
-					alloc.construct(&new_arr[i], _arr[i]); // call copy constructor
-					alloc.destroy(&_arr[i]); // call destructor
+					alloc.construct(&new_arr[i], _arr[i]);
+					alloc.destroy(&_arr[i]);
 				}
 
 				alloc.deallocate(_arr, _cap);
@@ -370,6 +371,173 @@ namespace	ft
 				return _arr[_len - 1];
 			}
 
+			//Modifiers
+			void assign(size_type count, const value_type& value)
+			{
+				clear();
+				insert(begin(), count, value);
+			}
+
+			template <typename InputIt>
+			void assign(InputIt first, InputIt last)
+			{
+				clear();
+				insert(begin(), first, last);
+			}
+
+			void push_back(const value_type& value)
+			{
+				insert(end(), value);
+			}
+
+			void pop_back()
+			{
+				erase(end() - 1);
+			}
+			iterator insert(iterator pos, const value_type& value)
+			{
+				insert(pos, 1, value);
+				return pos;
+			}
+
+			void insert( iterator pos, size_type count, const value_type& value )
+			{
+				size_t index = pos.ptr() - _arr;
+				if (!count)
+					return;
+				reserve(_len + count); // reserve more space for count new elements
+				std::allocator<T> alloc;
+
+				for (std::ptrdiff_t i = _len - 1; i >= (std::ptrdiff_t)index; i--)
+				{
+					// move elements count times to the right
+					alloc.construct(&_arr[i + count], _arr[i]);
+					alloc.destroy(&_arr[i]);
+				}
+
+				for (size_t i = index; i < index + count; i++)
+					alloc.construct(&_arr[i], value);
+				_len += count;
+			}
+
+			template <typename InputIt>
+			void insert(iterator pos, InputIt first, InputIt last)
+			{
+				size_t index = pos.ptr() - _arr;
+				size_t count = distance(first, last);
+				if (!count)
+					return;
+				reserve(_len + count); // reserve after calculating the index!
+
+				std::allocator<T> alloc;
+
+				for (std::ptrdiff_t i = _len - 1; i >= (std::ptrdiff_t)index; i--)
+				{
+					// move elements count times to the right
+					alloc.construct(&_arr[i + count], _arr[i]);
+					alloc.destroy(&_arr[i]);// empty space for new elements
+				}
+
+				for (InputIt ite = first; ite != last; ++ite)
+					alloc.construct(&_arr[index++], *ite);
+
+				_len += count;
+			}
+
+			iterator erase(iterator pos)
+			{
+				return erase(pos, pos + 1);
+			}
+
+			iterator erase(iterator first, iterator last)
+			{
+				size_t count = last - first;
+				if (count <= 0)
+					return last;
+				size_t index = first.ptr() - _arr;
 			
+				std::allocator<T> alloc;
+				for (size_t i = index; i < index + count; i++)
+					alloc.destroy(&_arr[i]); // destroy elements from position
+
+				for (size_t i = index + count; i < _len; i++)
+				{
+					// move elements count to the left
+					alloc.construct(&_arr[i - count], _arr[i]);
+					alloc.destroy(&_arr[i]);
+				}
+				_len -= count;
+				return first;
+			}
+			
+			void swap(Vector<T>& other)
+			{
+				std::swap(_arr, other._arr);
+				std::swap(_len, other._len);
+				std::swap(_cap, other._cap);
+			}
+
+			void clear()
+			{
+				erase(begin(), end());
+			}
 	};
+
+	template <typename T>
+	bool operator==(const Vector<T>& lhs, const Vector<T>& rhs)
+	{
+		if (lhs.size() != rhs.size())
+			return false;
+
+		for (size_t i = 0; i < lhs.size(); i++)
+			if (lhs[i] != rhs[i])
+				return false;
+
+		return true;
+	}
+
+	template <typename T>
+	bool operator!=(const Vector<T>& lhs, const Vector<T>& rhs)
+	{
+		return !(lhs == rhs);
+	}
+
+	template <typename T>
+	bool operator<(const Vector<T>& lhs, const Vector<T>& rhs)
+	{
+		for (size_t i = 0; i < lhs.size() && i < rhs.size(); i++)
+			if (lhs[i] != rhs[i])
+				return lhs[i] < rhs[i];
+
+		if (lhs.size() == rhs.size())
+			return false; // lhs == rhs at that point
+
+		return lhs.size() < rhs.size(); // lhs < rhs if lhs is prefix of rhs
+	}
+
+	template <typename T>
+	bool operator<=(const Vector<T>& lhs, const Vector<T>& rhs)
+	{
+		return !(lhs > rhs);
+	}
+
+	template <typename T>
+	bool operator>(const Vector<T>& lhs, const Vector<T>& rhs)
+	{
+		return rhs < lhs;
+	}
+
+	template <typename T>
+	bool operator>=(const Vector<T>& lhs, const Vector<T>& rhs)
+	{
+		return !(lhs < rhs);
+	}
+
+	template <typename T>
+	void swap(Vector<T>& lhs, Vector<T>& rhs)
+	{
+		rhs.swap(lhs);
+	}
 }
+
+#endif
