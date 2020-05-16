@@ -9,6 +9,8 @@ int main()
 	test_vector();
 	std::cout << "\n\n\n:: Stack ::" << std::endl;
 	test_stack();
+	std::cout << "\n\n\n:: Queue ::" << std::endl;
+	test_queue();
 	std::cout << ":: Everything is ok! ::" << std::endl;
 	return 0;
 }
