@@ -2,6 +2,7 @@
 # define TEST_HPP
 # include "../List.hpp"
 # include "../Vector.hpp"
+# include "../Stack.hpp"
 # include <iostream>
 # include <assert.h>
 # include <sstream>
@@ -34,5 +35,6 @@ void test_one(std::string name, void (&fn)());
 
 void test_list();
 void test_vector();
+void test_stack();
 
 #endif
