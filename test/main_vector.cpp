@@ -1,61 +1,118 @@
 
 #include "Test.hpp"
+#include <vector>
 
 static void test_pushback()
 {
 	ft::Vector<ConstrCounter> vec;
 	assert(vec.size() == 0);
+	//std
+	std::vector<ConstrCounter> v;
+	assert(v.size() == 0);
 
 	vec.push_back(ConstrCounter(0));
 	assert(vec.size() == 1);
 	assert(vec[0].val == 0);
+	//std
+	v.push_back(ConstrCounter(0));
+	assert(v.size() == 1);
+	assert(v[0].val == 0);
+
 
 	vec.push_back(ConstrCounter(1));
 	assert(vec.size() == 2);
 	assert(vec[1].val == 1);
+	//std
+	v.push_back(ConstrCounter(1));
+	assert(v.size() == 2);
+	assert(v[1].val == 1);
+
 
 	vec.push_back(ConstrCounter(8000));
 	assert(vec.size() == 3);
 	assert(vec[2].val == 8000);
+	//std
+	v.push_back(ConstrCounter(8000));
+	assert(v.size() == 3);
+	assert(v[2].val == 8000);
+
 
 	vec.push_back(ConstrCounter(33));
 	assert(vec.size() == 4);
 	assert(vec[3].val == 33);
+	//std
+	v.push_back(ConstrCounter(33));
+	assert(v.size() == 4);
+	assert(v[3].val == 33);
 }
 
 static void test_assign()
 {
 	ft::Vector<ConstrCounter> vec;
 	assert(vec.size() == 0);
+	//std
+	std::vector<ConstrCounter> v;
+	assert(v.size() == 0);
+
 
 	vec.assign(0, ConstrCounter(66));
 	assert(vec.size() == 0);
+	//std
+	v.assign(0, ConstrCounter(66));
+	assert(v.size() == 0);
 
 	vec.assign(10, ConstrCounter(5));
 	assert(vec.size() == 10);
 	assert(vec[2].val == 5);
 	assert(vec[9].val == 5);
+	//std
+	v.assign(10, ConstrCounter(5));
+	assert(v.size() == 10);
+	assert(v[2].val == 5);
+	assert(v[9].val == 5);
+
 
 	vec.assign(15, ConstrCounter(120));
 	assert(vec.size() == 15);
 	assert(vec[0].val == 120);
 	assert(vec[6].val == 120);
+	//std
+	v.assign(15, ConstrCounter(120));
+	assert(v.size() == 15);
+	assert(v[0].val == 120);
+	assert(v[6].val == 120);
+
 
 	vec.assign(5, ConstrCounter(6));
 	assert(vec.size() == 5);
 	assert(vec[2].val == 6);
 	assert(vec[3].val == 6);
+	//std
+	v.assign(5, ConstrCounter(6));
+	assert(v.size() == 5);
+	assert(v[2].val == 6);
+	assert(v[3].val == 6);
+
 
 	vec.assign(50, ConstrCounter(9000));
 	assert(vec.size() == 50);
 	assert(vec[26].val == 9000);
 	assert(vec[49].val == 9000);
+	//std
+	v.assign(50, ConstrCounter(9000));
+	assert(v.size() == 50);
+	assert(v[26].val == 9000);
+	assert(v[49].val == 9000);
 }
 
 static void test_assign_iter()
 {
 	ft::Vector<ConstrCounter> vec;
 	assert(vec.size() == 0);
+	//std
+	std::vector<ConstrCounter> v;
+	assert(v.size() == 0);
+	
 
 	{
 		ConstrCounter array[0] = {};
@@ -63,6 +120,15 @@ static void test_assign_iter()
 		vec.assign(array, array);
 		assert(vec.size() == 0);
 	}
+	//std
+	{
+		ConstrCounter array[0] = {};
+
+		v.assign(array, array);
+		assert(v.size() == 0);
+	}
+
+
 	{
 		ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
 
@@ -74,6 +140,20 @@ static void test_assign_iter()
 		assert(vec[3].val == 3);
 		assert(vec[4].val == 4);
 	}
+	//std
+	{
+		ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
+
+		v.assign(array, array + 5);
+		assert(v.size() == 5);
+		assert(v[0].val == 0);
+		assert(v[1].val == 1);
+		assert(v[2].val == 2);
+		assert(v[3].val == 3);
+		assert(v[4].val == 4);
+	}
+
+
 	{
 		ConstrCounter array[2] = { 42, 43 };
 
@@ -81,6 +161,15 @@ static void test_assign_iter()
 		assert(vec.size() == 2);
 		assert(vec[0].val == 42);
 		assert(vec[1].val == 43);
+	}
+	//std
+	{
+		ConstrCounter array[2] = { 42, 43 };
+
+		v.assign(array, array + 2);
+		assert(v.size() == 2);
+		assert(v[0].val == 42);
+		assert(v[1].val == 43);
 	}
 }
 
@@ -90,29 +179,70 @@ static void test_constr()
 		ft::Vector<ConstrCounter> vec(0, ConstrCounter(5));
 		assert(vec.size() == 0);
 	}
+	//std
+	{
+		std::vector<ConstrCounter> v(0, ConstrCounter(5));
+		assert(v.size() == 0);
+	}
+
+
 	{
 		ft::Vector<ConstrCounter> vec(10, ConstrCounter(5));
 		assert(vec.size() == 10);
 		assert(vec[2].val == 5);
 		assert(vec[9].val == 5);
 	}
+	//std
+	{
+		std::vector<ConstrCounter> v(10, ConstrCounter(5));
+		assert(v.size() == 10);
+		assert(v[2].val == 5);
+		assert(v[9].val == 5);
+	}
+
+
 	{
 		ft::Vector<ConstrCounter> vec(15, ConstrCounter(120));
 		assert(vec.size() == 15);
 		assert(vec[0].val == 120);
 		assert(vec[6].val == 120);
 	}
+	//std
+	{
+		std::vector<ConstrCounter> v(15, ConstrCounter(120));
+		assert(v.size() == 15);
+		assert(v[0].val == 120);
+		assert(v[6].val == 120);
+	}
+
+
 	{
 		ft::Vector<ConstrCounter> vec(5, ConstrCounter(6));
 		assert(vec.size() == 5);
 		assert(vec[2].val == 6);
 		assert(vec[3].val == 6);
 	}
+	//std
+	{
+		std::vector<ConstrCounter> v(5, ConstrCounter(6));
+		assert(v.size() == 5);
+		assert(v[2].val == 6);
+		assert(v[3].val == 6);
+	}
+
+
 	{
 		ft::Vector<ConstrCounter> vec(50, ConstrCounter(9000));
 		assert(vec.size() == 50);
 		assert(vec[26].val == 9000);
 		assert(vec[49].val == 9000);
+	}
+	//std
+	{
+		std::vector<ConstrCounter> v(50, ConstrCounter(9000));
+		assert(v.size() == 50);
+		assert(v[26].val == 9000);
+		assert(v[49].val == 9000);
 	}
 }
 
@@ -124,6 +254,15 @@ static void test_constr_iter()
 		ft::Vector<ConstrCounter> vec(array, array);
 		assert(vec.size() == 0);
 	}
+	//std
+	{
+		ConstrCounter array[0] = {};
+
+		std::vector<ConstrCounter> v(array, array);
+		assert(v.size() == 0);
+	}
+
+
 	{
 		ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
 
@@ -135,6 +274,20 @@ static void test_constr_iter()
 		assert(vec[3].val == 3);
 		assert(vec[4].val == 4);
 	}
+	//std
+	{
+		ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
+
+		std::vector<ConstrCounter> v(array, array + 5);
+		assert(v.size() == 5);
+		assert(v[0].val == 0);
+		assert(v[1].val == 1);
+		assert(v[2].val == 2);
+		assert(v[3].val == 3);
+		assert(v[4].val == 4);
+	}
+
+	
 	{
 		ConstrCounter array[2] = { 42, 43 };
 
@@ -142,6 +295,15 @@ static void test_constr_iter()
 		assert(vec.size() == 2);
 		assert(vec[0].val == 42);
 		assert(vec[1].val == 43);
+	}
+	//std
+	{
+		ConstrCounter array[2] = { 42, 43 };
+
+		std::vector<ConstrCounter> v(array, array + 2);
+		assert(v.size() == 2);
+		assert(v[0].val == 42);
+		assert(v[1].val == 43);
 	}
 }
 
@@ -151,29 +313,60 @@ static void test_assign_copy()
 	vec.push_back(ConstrCounter(0));
 	vec.push_back(ConstrCounter(1));
 	vec.push_back(ConstrCounter(2));
+	//std
+	std::vector<ConstrCounter> v;
+	v.push_back(ConstrCounter(0));
+	v.push_back(ConstrCounter(1));
+	v.push_back(ConstrCounter(2));
+
 
 	ft::Vector<ConstrCounter> vec2(vec);
 	assert(vec2.size() == 3);
 	assert(vec2[0].val == 0);
 	assert(vec2[1].val == 1);
 	assert(vec2[2].val == 2);
+	//std
+	std::vector<ConstrCounter> v2(v);
+	assert(v2.size() == 3);
+	assert(v2[0].val == 0);
+	assert(v2[1].val == 1);
+	assert(v2[2].val == 2);
+
 
 	vec2.push_back(ConstrCounter(3));
 	assert(vec.size() == 3);
 	assert(vec2.size() == 4);
+	//std
+	v2.push_back(ConstrCounter(3));
+	assert(v.size() == 3);
+	assert(v2.size() == 4);
+
 
 	ft::Vector<ConstrCounter> vec3;
 	assert(vec3.size() == 0);
+	//std
+	std::vector<ConstrCounter> v3;
+	assert(v3.size() == 0);
 
 	vec3 = vec2;
 	assert(vec.size() == 3);
 	assert(vec2.size() == 4);
 	assert(vec3.size() == 4);
+	//std
+	v3 = v2;
+	assert(v.size() == 3);
+	assert(v2.size() == 4);
+	assert(v3.size() == 4);
 
 	vec = vec3;
 	assert(vec.size() == 4);
 	assert(vec2.size() == 4);
 	assert(vec3.size() == 4);
+	//std
+	v = v3;
+	assert(v.size() == 4);
+	assert(v2.size() == 4);
+	assert(v3.size() == 4);
 
 	assert(vec[0].val == 0);
 	assert(vec[1].val == 1);
@@ -187,6 +380,19 @@ static void test_assign_copy()
 	assert(vec3[1].val == 1);
 	assert(vec3[2].val == 2);
 	assert(vec3[3].val == 3);
+	//std
+	assert(v[0].val == 0);
+	assert(v[1].val == 1);
+	assert(v[2].val == 2);
+	assert(v[3].val == 3);
+	assert(v2[0].val == 0);
+	assert(v2[1].val == 1);
+	assert(v2[2].val == 2);
+	assert(v2[3].val == 3);
+	assert(v3[0].val == 0);
+	assert(v3[1].val == 1);
+	assert(v3[2].val == 2);
+	assert(v3[3].val == 3);
 }
 
 static void test_accessors()
@@ -195,23 +401,45 @@ static void test_accessors()
 	vec.push_back(ConstrCounter(0));
 	vec.push_back(ConstrCounter(1));
 	vec.push_back(ConstrCounter(2));
+	//std
+	std::vector<ConstrCounter> v;
+	v.push_back(ConstrCounter(0));
+	v.push_back(ConstrCounter(1));
+	v.push_back(ConstrCounter(2));
 
 	assert(vec[0].val == 0);
 	assert(vec[1].val == 1);
 	assert(vec[2].val == 2);
+	//std
+	assert(v[0].val == 0);
+	assert(v[1].val == 1);
+	assert(v[2].val == 2);
 
 	assert(vec.at(0).val == 0);
 	assert(vec.at(1).val == 1);
 	assert(vec.at(2).val == 2);
+	//std
+	assert(v.at(0).val == 0);
+	assert(v.at(1).val == 1);
+	assert(v.at(2).val == 2);
 
 	bool exception = false;
 	try { vec.at(3); }
 	catch (const std::out_of_range& e)
 	{ exception = true; }
 	assert(exception);
+	//std
+	bool exception1 = false;
+	try { v.at(3); }
+	catch (const std::out_of_range& e)
+	{ exception1 = true; }
+	assert(exception1);
 
 	assert(vec.front().val == 0);
 	assert(vec.back().val == 2);
+	//std
+	assert(v.front().val == 0);
+	assert(v.back().val == 2);
 }
 
 static void test_capacity()
@@ -219,13 +447,25 @@ static void test_capacity()
 	ft::Vector<ConstrCounter> vec;
 	assert(vec.empty());
 	assert(vec.size() == 0);
+	//std
+	std::vector<ConstrCounter> v;
+	assert(v.empty());
+	assert(v.size() == 0);
 
 	vec.push_back(ConstrCounter(0));
 	vec.push_back(ConstrCounter(1));
 	vec.push_back(ConstrCounter(2));
+	//std
+	v.push_back(ConstrCounter(0));
+	v.push_back(ConstrCounter(1));
+	v.push_back(ConstrCounter(2));
+
 
 	assert(!vec.empty());
 	assert(vec.size() == 3);
+	//std
+	assert(!v.empty());
+	assert(v.size() == 3);
 
 	vec.reserve(50);
 	assert(vec.capacity() >= 50);
@@ -243,11 +483,33 @@ static void test_capacity()
 	assert(vec.capacity() >= 60);
 	vec.reserve(0);
 	assert(vec.capacity() >= 60);
+	//std
+	v.reserve(50);
+	assert(v.capacity() >= 50);
+	v.reserve(50);
+	assert(v.capacity() >= 50);
+	v.reserve(20);
+	assert(v.capacity() >= 50);
+	v.reserve(10);
+	assert(v.capacity() >= 50);
+	v.reserve(0);
+	assert(v.capacity() >= 50);
+	v.reserve(60);
+	assert(v.capacity() >= 60);
+	v.reserve(10);
+	assert(v.capacity() >= 60);
+	v.reserve(0);
+	assert(v.capacity() >= 60);
 
 	vec.clear();
 	assert(vec.size() == 0);
 	assert(vec.empty());
 	assert(vec.capacity() >= 60);
+	//std
+	v.clear();
+	assert(v.size() == 0);
+	assert(v.empty());
+	assert(v.capacity() >= 60);
 }
 
 static void test_iterator()
@@ -255,19 +517,40 @@ static void test_iterator()
 	ft::Vector<ConstrCounter> vec;
 	assert(vec.size() == 0);
 	assert(vec.begin() == vec.end());
+	//std
+	std::vector<ConstrCounter> v;
+	assert(v.size() == 0);
+	assert(v.begin() == v.end());
+
 
 	vec.push_back(ConstrCounter(0));
 	assert(vec.size() == 1);
 	assert(vec.begin() + 1 == vec.end());
+	//std
+	v.push_back(ConstrCounter(0));
+	assert(v.size() == 1);
+	assert(v.begin() + 1 == v.end());
+
 
 	vec.push_back(ConstrCounter(1));
 	assert(vec.size() == 2);
 	assert(vec.begin() + 2 == vec.end());
+	//std
+	v.push_back(ConstrCounter(1));
+	assert(v.size() == 2);
+	assert(v.begin() + 2 == v.end());
+
 
 	vec.push_back(ConstrCounter(2));
 	assert(vec.size() == 3);
 	assert(vec.begin() + 3 == vec.end());
 	assert(vec.begin() == vec.end() - 3);
+	//std
+	v.push_back(ConstrCounter(2));
+	assert(v.size() == 3);
+	assert(v.begin() + 3 == v.end());
+	assert(v.begin() == v.end() - 3);
+
 
 	ft::Vector<ConstrCounter>::iterator ite = vec.begin();
 	assert((*ite).val == 0);
@@ -287,6 +570,25 @@ static void test_iterator()
 	assert(ite->val == 1);
 	assert(--ite == vec.begin());
 	assert(ite->val == 0);
+	//std
+	std::vector<ConstrCounter>::iterator ite1 = v.begin();
+	assert((*ite1).val == 0);
+	assert(ite1->val == 0);
+	assert(++ite1 == v.begin() + 1);
+	assert((*ite1).val == 1);
+	assert(ite1->val == 1);
+	assert(ite1++ == v.begin() + 1);
+	assert(ite1 == v.begin() + 2);
+	assert((*ite1).val == 2);
+	assert(ite1->val == 2);
+	assert(++ite1 == v.end());
+	assert(--ite1 == v.end() - 1);
+	assert(ite1->val == 2);
+	assert(ite1-- == v.end() - 1);
+	assert(ite1 == v.end() - 2);
+	assert(ite1->val == 1);
+	assert(--ite1 == v.begin());
+	assert(ite1->val == 0);
 }
 
 static void test_reverse_iterator()
@@ -295,6 +597,11 @@ static void test_reverse_iterator()
 	vec.push_back(ConstrCounter(0));
 	vec.push_back(ConstrCounter(1));
 	vec.push_back(ConstrCounter(2));
+	//std
+	std::vector<ConstrCounter> v;
+	v.push_back(ConstrCounter(0));
+	v.push_back(ConstrCounter(1));
+	v.push_back(ConstrCounter(2));
 	
 	ft::Vector<ConstrCounter>::reverse_iterator ite =
 		vec.rbegin();
@@ -305,42 +612,83 @@ static void test_reverse_iterator()
 	assert(ite->val == 0);
 	++ite;
 	assert(ite == vec.rend());
+	//std
+	std::vector<ConstrCounter>::reverse_iterator ite1 =
+		v.rbegin();
+	assert(ite1->val == 2);
+	++ite1;
+	assert(ite1->val == 1);
+	++ite1;
+	assert(ite1->val == 0);
+	++ite1;
+	assert(ite1 == v.rend());
 }
 
 static void test_insert_one()
 {
 	ft::Vector<ConstrCounter> vec;
+	std::vector<ConstrCounter> v;
 
 	vec.reserve(2);
 	assert(vec.insert(vec.begin(), ConstrCounter(5))
 		== vec.begin());
 	assert(vec.size() == 1);
 	assert(vec[0].val == 5);
+	//std
+	v.reserve(2);
+	assert(v.insert(v.begin(), ConstrCounter(5))
+		== v.begin());
+	assert(v.size() == 1);
+	assert(v[0].val == 5);
+
 
 	assert(vec.insert(vec.begin() + 1, ConstrCounter(5))
 		== vec.begin() + 1);
 	assert(vec.size() == 2);
 	assert(vec[1].val == 5);
+	//std
+	assert(v.insert(v.begin() + 1, ConstrCounter(5))
+		== v.begin() + 1);
+	assert(v.size() == 2);
+	assert(v[1].val == 5);
 }
 
 static void test_insert()
 {
 	ft::Vector<ConstrCounter> vec;
+	std::vector<ConstrCounter> v;
 	vec.reserve(12);
 	assert(vec.size() == 0);
+	//std
+	v.reserve(12);
+	assert(v.size() == 0);
+
 
 	vec.insert(vec.begin(), 0, ConstrCounter(66));
 	assert(vec.size() == 0);
+	//std
+	v.insert(v.begin(), 0, ConstrCounter(66));
+	assert(v.size() == 0);
 
 	vec.insert(vec.begin(), 10, ConstrCounter(120));
 	assert(vec.size() == 10);
 	assert(vec[2].val == 120);
 	assert(vec[9].val == 120);
+	//std
+	v.insert(v.begin(), 10, ConstrCounter(120));
+	assert(v.size() == 10);
+	assert(v[2].val == 120);
+	assert(v[9].val == 120);
 
 	vec.insert(vec.begin() + 3, 2, ConstrCounter(33));
 	assert(vec.size() == 12);
 	assert(vec[3].val == 33);
 	assert(vec[6].val == 120);
+	//std
+	v.insert(v.begin() + 3, 2, ConstrCounter(33));
+	assert(v.size() == 12);
+	assert(v[3].val == 33);
+	assert(v[6].val == 120);
 }
 
 static void test_insert_iter()
@@ -348,6 +696,10 @@ static void test_insert_iter()
 	ft::Vector<ConstrCounter> vec;
 	vec.reserve(7);
 	assert(vec.size() == 0);
+	//std
+	std::vector<ConstrCounter> v;
+	v.reserve(7);
+	assert(v.size() == 0);
 
 	{
 		ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
@@ -360,12 +712,35 @@ static void test_insert_iter()
 		assert(vec[3].val == 3);
 		assert(vec[4].val == 4);
 	}
+	//std
+	{
+		ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
+
+		v.insert(v.begin(), array, array + 5);
+		assert(v.size() == 5);
+		assert(v[0].val == 0);
+		assert(v[1].val == 1);
+		assert(v[2].val == 2);
+		assert(v[3].val == 3);
+		assert(v[4].val == 4);
+	}
+
+
 	{
 		ConstrCounter array[0] = {};
 
 		vec.insert(vec.begin() + 2, array, array);
 		assert(vec.size() == 5);
 	}
+	//std
+	{
+		ConstrCounter array[0] = {};
+
+		v.insert(v.begin() + 2, array, array);
+		assert(v.size() == 5);
+	}
+
+
 	{
 		ConstrCounter array[2] = { 42, 43 };
 
@@ -379,43 +754,80 @@ static void test_insert_iter()
 		assert(vec[5].val == 3);
 		assert(vec[6].val == 4);
 	}
+	//std
+	{
+		ConstrCounter array[2] = { 42, 43 };
+
+		v.insert(v.begin() + 2, array, array + 2);
+		assert(v.size() == 7);
+		assert(v[0].val == 0);
+		assert(v[1].val == 1);
+		assert(v[2].val == 42);
+		assert(v[3].val == 43);
+		assert(v[4].val == 2);
+		assert(v[5].val == 3);
+		assert(v[6].val == 4);
+	}
 }
 
 static void test_erase()
 {
 	ft::Vector<ConstrCounter> vec;
+	std::vector<ConstrCounter> v;
 	ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
 	vec.insert(vec.begin(), array, array + 5);
+	v.insert(v.begin(), array, array + 5);
 
 	vec.erase(vec.begin());
 	assert(vec.size() == 4);
 	assert(vec[0].val == 1);
+	//std
+	v.erase(v.begin());
+	assert(v.size() == 4);
+	assert(v[0].val == 1);
 
 	vec.erase(vec.begin() + 2);
 	assert(vec.size() == 3);
 	assert(vec[2].val == 4);
+	//std
+	v.erase(v.begin() + 2);
+	assert(v.size() == 3);
+	assert(v[2].val == 4);
 }
 
 static void test_erase_range()
 {
 	ft::Vector<ConstrCounter> vec;
+	std::vector<ConstrCounter> v;
 	ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
 	vec.insert(vec.begin(), array, array + 5);
+	v.insert(v.begin(), array, array + 5);
 
 	vec.erase(vec.begin() + 1, vec.end() - 1);
 	assert(vec.size() == 2);
 	assert(vec[0].val == 0);
 	assert(vec[1].val == 4);
+	//std
+	v.erase(v.begin() + 1, v.end() - 1);
+	assert(v.size() == 2);
+	assert(v[0].val == 0);
+	assert(v[1].val == 4);
 
 	vec.erase(vec.begin(), vec.begin());
 	assert(vec.size() == 2);
 	assert(vec[0].val == 0);
 	assert(vec[1].val == 4);
+	//std
+	v.erase(v.begin(), v.begin());
+	assert(v.size() == 2);
+	assert(v[0].val == 0);
+	assert(v[1].val == 4);
 }
 
 static void test_pop_back()
 {
 	ft::Vector<ConstrCounter> vec;
+	std::vector<ConstrCounter> v;
 	ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
 	vec.insert(vec.begin(), array, array + 5);
 
@@ -430,22 +842,50 @@ static void test_pop_back()
 	assert(vec.size() == 1);
 	vec.pop_back();
 	assert(vec.size() == 0);
+	//std
+	v.insert(v.begin(), array, array + 5);
+
+	assert(v.size() == 5);
+	v.pop_back();
+	assert(v.size() == 4);
+	v.pop_back();
+	assert(v.size() == 3);
+	v.pop_back();
+	assert(v.size() == 2);
+	v.pop_back();
+	assert(v.size() == 1);
+	v.pop_back();
+	assert(v.size() == 0);
 }
 
 static void test_resize()
 {
 	ft::Vector<ConstrCounter> vec;
+	std::vector<ConstrCounter> v;
+	assert(v.max_size() == vec.max_size());
+	std::cout << "STL max_size = FT max_size" << std::endl;
 
 	vec.resize(3, ConstrCounter(0));
 	assert(vec.size() == 3);
 	assert(vec[0].val == 0);
 	assert(vec[1].val == 0);
 	assert(vec[2].val == 0);
+	//std
+	v.resize(3, ConstrCounter(0));
+	assert(v.size() == 3);
+	assert(v[0].val == 0);
+	assert(v[1].val == 0);
+	assert(v[2].val == 0);
 
 	vec.resize(2, ConstrCounter(5));
 	assert(vec.size() == 2);
 	assert(vec[0].val == 0);
 	assert(vec[1].val == 0);
+	//std
+	v.resize(2, ConstrCounter(5));
+	assert(v.size() == 2);
+	assert(v[0].val == 0);
+	assert(v[1].val == 0);
 
 	vec.resize(5, ConstrCounter(99));
 	assert(vec.size() == 5);
@@ -454,27 +894,49 @@ static void test_resize()
 	assert(vec[2].val == 99);
 	assert(vec[3].val == 99);
 	assert(vec[4].val == 99);
+	//std
+	v.resize(5, ConstrCounter(99));
+	assert(v.size() == 5);
+	assert(v[0].val == 0);
+	assert(v[1].val == 0);
+	assert(v[2].val == 99);
+	assert(v[3].val == 99);
+	assert(v[4].val == 99);
 }
 
 static void test_swap()
 {
 	ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
 	ft::Vector<ConstrCounter> vec(array, array + 5);
+	std::vector<ConstrCounter> v(array, array + 5);
 
 	ConstrCounter array2[3] = { 2, 3, 1 };
 	ft::Vector<ConstrCounter> vec2(array2, array2 + 3);
+	std::vector<ConstrCounter> v2(array2, array2 + 3);
 
 	vec.swap(vec2);
 	assert(vec.size() == 3);
 	assert(vec2.size() == 5);
 	assert(vec[0].val == 2);
 	assert(vec2[0].val == 0);
+	//std
+	v.swap(v2);
+	assert(v.size() == 3);
+	assert(v2.size() == 5);
+	assert(v[0].val == 2);
+	assert(v2[0].val == 0);
 
 	ft::swap(vec2, vec);
 	assert(vec.size() == 5);
 	assert(vec2.size() == 3);
 	assert(vec[0].val == 0);
 	assert(vec2[0].val == 2);
+	//std
+	std::swap(v2, v);
+	assert(v.size() == 5);
+	assert(v2.size() == 3);
+	assert(v[0].val == 0);
+	assert(v2[0].val == 2);
 }
 
 static void test_cmp_eq()
@@ -482,10 +944,19 @@ static void test_cmp_eq()
 	ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
 	ft::Vector<ConstrCounter> vec(array, array + 5);
 	ft::Vector<ConstrCounter> vec2(vec);
+	//std
+	std::vector<ConstrCounter> v(array, array + 5);
+	std::vector<ConstrCounter> v2(v);
+
 
 	assert(vec == vec2);
 	assert(vec >= vec2);
 	assert(vec <= vec2);
+	//std
+	assert(v == v2);
+	assert(v >= v2);
+	assert(v <= v2);
+
 
 	vec2.push_back(50);
 	assert(vec != vec2);
@@ -493,6 +964,14 @@ static void test_cmp_eq()
 	assert(vec <= vec2);
 	assert(vec2 > vec);
 	assert(vec2 >= vec);
+	//std
+	v2.push_back(50);
+	assert(v != v2);
+	assert(v < v2);
+	assert(v <= v2);
+	assert(v2 > v);
+	assert(v2 >= v);
+
 
 	vec.push_back(200);
 	assert(vec != vec2);
@@ -500,6 +979,13 @@ static void test_cmp_eq()
 	assert(vec >= vec2);
 	assert(vec2 < vec);
 	assert(vec2 <= vec);
+	//std
+	v.push_back(200);
+	assert(v != v2);
+	assert(v > v2);
+	assert(v >= v2);
+	assert(v2 < v);
+	assert(v2 <= v);
 }
 
 void test_vector()
