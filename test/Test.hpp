@@ -4,6 +4,7 @@
 # include "../Vector.hpp"
 # include "../Stack.hpp"
 # include "../Queue.hpp"
+# include "../Map.hpp"
 # include <iostream>
 # include <assert.h>
 # include <sstream>
@@ -38,5 +39,6 @@ void test_list();
 void test_vector();
 void test_stack();
 void test_queue();
+void test_map();
 
 #endif

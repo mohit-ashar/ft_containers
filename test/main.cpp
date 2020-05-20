@@ -11,6 +11,8 @@ int main()
 	test_stack();
 	std::cout << "\n\n\n:: Queue ::" << std::endl;
 	test_queue();
+	std::cout << "\n\n\n:: Map ::" << std::endl;
+	test_map();
 	std::cout << ":: Everything is ok! ::" << std::endl;
 	return 0;
 }

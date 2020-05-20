@@ -4,18 +4,123 @@
 
 namespace ft
 {
+		template<class T>
+		struct less : std::binary_function<T, T, bool>
+		{
+			bool operator()(const T &x, const T &y) const { return x < y; }
+		};
 
-	template<class T>
-	struct greater : std::binary_function<T, T, bool>
+		template <typename T>
+		T	fwd(T it, int n)
+		{
+			if (n > 0)
+				while (n--) it++;
+			else
+				while (n++) it--;
+			return (it);
+		}
+
+		template<typename E>
+		struct AVLTreeNode
+		{
+			E el;
+			AVLTreeNode* parent;
+			AVLTreeNode* right;
+			AVLTreeNode* left;
+			int height;
+			AVLTreeNode(E el_, AVLTreeNode* parent_, AVLTreeNode* right_, AVLTreeNode* left_, int height_):
+				el(el_), parent(parent_), right(right_), left(left_), height(height_)
+			{
+			}
+		};
+	template <typename T1, typename T2>
+	struct Pair
 	{
-		bool operator()( const T &x, const T &y) const { return x > y;}
+		typedef T1 first_type;
+		typedef T2 second_type;
+
+		T1 first;
+		T2 second;
+
+		Pair():first(), second()
+		{
+		}
+
+		~Pair()
+		{
+		}
+
+		Pair(const T1& x, const T2& y): first(x), second(y)
+		{
+		}
+
+		template <typename U1, typename U2>
+		Pair(const Pair<U1, U2>& c): first(c.first), second(c.second)
+		{
+		}
+
+		Pair(const Pair<T1, T2>& c): first(c.first), second(c.second)
+		{
+		}
+
+		template <typename U1, typename U2>
+		Pair<T1, T2>& operator=(const Pair<U1, U2>& c)
+		{
+			first = c.first;
+			second = c.second;
+			return *this;
+		}
+
+		Pair<T1, T2>& operator=(const Pair<T1, T2>& c)		{
+			first = c.first;
+			second = c.second;
+			return *this;
+		}
 	};
 
-	template<class T>
-	struct less : std::binary_function<T, T, bool>
+	template <typename T1, typename T2>
+	Pair<T1, T2> make_pair(T1 t, T2 u)
 	{
-		bool operator()( const T &x, const T &y) const { return x < y;}
-	};
+		return Pair<T1, T2>(t, u);
+	}
+
+	template <typename T1, typename T2>
+	bool operator==(const Pair<T1, T2>& lhs, const Pair<T1, T2>& rhs)
+	{
+		return lhs.first == rhs.first && lhs.second == rhs.second;
+	}
+
+	template <typename T1, typename T2>
+	bool operator<(const Pair<T1, T2>& lhs, const Pair<T1, T2>& rhs)
+	{
+		return lhs.first < rhs.first && lhs.second < rhs.second;
+	}
+
+	template <typename T1, typename T2>
+	bool operator!=(const Pair<T1, T2>& lhs, const Pair<T1, T2>& rhs)
+	{
+		return !(lhs == rhs);
+	}
+
+	template <typename T1, typename T2>
+	bool operator<=(const Pair<T1, T2>& lhs, const Pair<T1, T2>& rhs)
+	{
+		return !(lhs > rhs);
+	}
+
+	template <typename T1, typename T2>
+	bool operator>(const Pair<T1, T2>& lhs, const Pair<T1, T2>& rhs)
+	{
+		return rhs < lhs;
+	}
+
+	template <typename T1, typename T2>
+	bool operator>=(const Pair<T1, T2>& lhs, const Pair<T1, T2>& rhs)
+	{
+		return !(lhs < rhs);
+	}
+
+	//Iterator tags
 
     struct InputIteratorTag {};
 	struct OutputIteratorTag {};
