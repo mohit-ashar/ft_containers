@@ -44,11 +44,6 @@ namespace   ft
 		{
 		}
 
-		ft::ListNode<T> *getPtrNode() const
-		{
-			return _nxt;
-		}
-
 		ListIterator<T>& operator=(const ListIterator<T> &other)
 		{
 			_prv = other._prv;
