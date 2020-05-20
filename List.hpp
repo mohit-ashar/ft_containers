@@ -44,6 +44,11 @@ namespace   ft
 		{
 		}
 
+		ft::ListNode<T> *getPtrNode() const
+		{
+			return _nxt;
+		}
+
 		ListIterator<T>& operator=(const ListIterator<T> &other)
 		{
 			_prv = other._prv;
@@ -226,7 +231,10 @@ namespace   ft
 				return _len;
 			}
 		
-			size_t max_size() const;
+			size_t max_size() const
+			{
+				return static_cast<size_type>(-1 / sizeof(ListNode<T>));
+			}
 
 			//ELEMENT ACCESS
 			reference front()
@@ -473,31 +481,89 @@ namespace   ft
 				}
 			}
 
-			void merge(List& x)
+			void merge(List& other)
 			{
-				iterator beg = x.begin();
-				iterator end = x.end();
-				ft::List<T> newList;
-				while (beg != end)
+				ListNode<T> *x = this->_head;
+				ListNode<T> *y = other._head;
+				ListNode<T> *y1;
+				ListNode<T> *bef;
+
+				while (y != NULL)
 				{
-					push_back(*beg);
-					beg++;
+					if ( x->node <= y->node && x != _tail)
+						x = x->nxt;
+					else if (x != _tail)
+					{
+						y1 = y->nxt;
+						if (x != _head)
+						{
+							bef = x->prv;
+							bef->nxt = y;
+							y->prv = bef;
+						}
+						else
+							_head = y;
+						y->nxt = x;
+						x->prv = y;
+						y = y1;
+					}
+					else
+					{
+						y1 = y->nxt;
+						bef = y;
+						x->nxt = bef;
+						bef->prv = x;
+						x = x->nxt;
+						y = y1;
+						_tail = x;
+					}
 				}
-				this->sort();
+				_len += other._len;
+				other._len = 0;
+				other._head=NULL;
+				other._tail=NULL;
 			}
 
 			template <typename Compare>
-			void merge(List& x, Compare comp)
+			void merge(List& other, Compare comp)
 			{
-				iterator beg = x.begin();
-				iterator end = x.end();
-				ft::List<T> newList;
-				while (beg != end)
+				ListNode<T> *x = this->_head;
+				ListNode<T> *y = other._head;
+				ListNode<T> *y1;
+
+				while (y != NULL)
 				{
-					push_back(*beg);
-					beg++;
+					if ( comp(x->node, y->node) && x != _tail)
+						x = x->nxt;
+					else if (x != _tail)
+					{
+						y1 = y->nxt;
+						if (x != _head)
+						{
+							x->prv->nxt = y;
+							y->prv = x->prv;
+						}
+						else
+							_head = y;
+						y->nxt = x;
+						x->prv = y;
+						y = y1;
+					}
+					else
+					{
+						y1 = y->nxt;
+						x->nxt = y;
+						y->prv = x;
+						x = x->nxt;
+						y = y1;
+						_tail = x;
+					}
 				}
-				this->sort(comp);
+				_len += other._len;
+				other._len = 0;
+				other._head=NULL;
+				other._tail=NULL;
+
 			}
 			void sort()
 			{

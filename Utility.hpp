@@ -4,6 +4,19 @@
 
 namespace ft
 {
+
+	template<class T>
+	struct greater : std::binary_function<T, T, bool>
+	{
+		bool operator()( const T &x, const T &y) const { return x > y;}
+	};
+
+	template<class T>
+	struct less : std::binary_function<T, T, bool>
+	{
+		bool operator()( const T &x, const T &y) const { return x < y;}
+	};
+
     struct InputIteratorTag {};
 	struct OutputIteratorTag {};
 	struct ForwardIteratorTag: public InputIteratorTag {};

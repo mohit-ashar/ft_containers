@@ -269,8 +269,7 @@ namespace	ft
 
 			size_type max_size() const
 			{
-				// 64 bit pointers -- 2**64 / sizeof(T)
-				return 18446744073709551615uL / sizeof(T);
+				return static_cast<size_type>(-1 / sizeof(T));
 			}
 
 			void resize(size_t count, T value = T())
@@ -293,6 +292,8 @@ namespace	ft
 
 			void reserve(size_type new_cap)
 			{
+				if (new_cap > max_size())
+					throw std::length_error("ft::vector: too big capacity to reserve");
 				if (new_cap <= _cap) // no reallocation when not needed
 					return;
 
